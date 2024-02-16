@@ -3,3 +3,6 @@ node_modules
 
 #BUILD
 build
+
+#ENVIRONMENT VARIABLES
+.env
