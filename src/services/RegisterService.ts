@@ -1,16 +1,25 @@
 import { IUserRepository } from '@/repositories/interfaces/IUserRepository'
 import { hash } from 'bcryptjs'
 import { UserAlreadyExistsError } from './errors/UserAlreadyExistsError'
+import { User } from '@prisma/client'
 
-interface IUserServiceRequest {
+interface IRegisterServiceRequest {
   name: string
   email: string
   password: string
 }
 
+interface IRegisterServiceResponse {
+  user: User
+}
+
 export class RegisterService {
   constructor(private userRepository: IUserRepository) {}
-  async execute({ name, email, password }: IUserServiceRequest) {
+  async execute({
+    name,
+    email,
+    password,
+  }: IRegisterServiceRequest): Promise<IRegisterServiceResponse> {
     const isEmailAlreadyExists = await this.userRepository.findByEmail(email)
 
     if (isEmailAlreadyExists) {
