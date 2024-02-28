@@ -1,5 +1,6 @@
 import { UserRepository } from '@/repositories/UserRepository'
 import { RegisterService } from '@/services/RegisterService'
+import { UserAlreadyExistsError } from '@/services/errors/UserAlreadyExistsError'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
@@ -20,14 +21,18 @@ export async function RegisterController(
 
     const registerService = new RegisterService(userRepository)
 
-    const user = await registerService.execute({
+    await registerService.execute({
       name,
       email,
       password,
     })
-
-    return reply.status(201).send({ user })
   } catch (error) {
-    return reply.status(404).send({ message: 'Email already exists' })
+    if (error instanceof UserAlreadyExistsError) {
+      return reply.status(409).send({ message: error.message })
+    }
+
+    throw error
   }
+
+  return reply.status(201).send()
 }
