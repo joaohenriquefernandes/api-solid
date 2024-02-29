@@ -1,6 +1,5 @@
-import { UserRepository } from '@/repositories/UserRepository'
-import { RegisterService } from '@/services/RegisterService'
 import { UserAlreadyExistsError } from '@/services/errors/UserAlreadyExistsError'
+import { makeRegisterService } from '@/services/factories/MakeRegisterService'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
@@ -17,9 +16,7 @@ export async function RegisterController(
   const { name, email, password } = registerBodySchema.parse(request.body)
 
   try {
-    const userRepository = new UserRepository()
-
-    const registerService = new RegisterService(userRepository)
+    const registerService = makeRegisterService()
 
     await registerService.execute({
       name,
