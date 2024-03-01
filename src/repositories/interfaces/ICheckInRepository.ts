@@ -5,4 +5,5 @@ export interface ICheckInRepository {
     user_id,
     gym_id,
   }: Prisma.CheckInUncheckedCreateInput) => Promise<CheckIn>
+  findByUserIdOnDate: (userId: string, date: Date) => Promise<CheckIn | null>
 }

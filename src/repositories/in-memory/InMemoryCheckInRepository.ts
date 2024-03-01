@@ -4,6 +4,7 @@ import { randomUUID } from 'node:crypto'
 
 export class InMemoryCheckInRepository implements ICheckInRepository {
   public item: CheckIn[] = []
+
   async create({
     user_id,
     gym_id,
@@ -20,5 +21,18 @@ export class InMemoryCheckInRepository implements ICheckInRepository {
     this.item.push(checkIn)
 
     return checkIn
+  }
+
+  async findByUserIdOnDate(
+    userId: string,
+    date: Date,
+  ): Promise<CheckIn | null> {
+    const checkInOnSameDate = this.item.find((item) => item.user_id === userId)
+
+    if (!checkInOnSameDate) {
+      return null
+    }
+
+    return checkInOnSameDate
   }
 }
