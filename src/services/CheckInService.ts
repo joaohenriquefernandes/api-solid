@@ -17,12 +17,12 @@ export class CheckInService {
     userId,
     gymId,
   }: ICheckInServiceRequest): Promise<ICheckInServiceResponse> {
-    const checkInOnSameDate = await this.checkInRepository.findByUserIdOnDate(
+    const checkInOnSameDay = await this.checkInRepository.findByUserIdOnDate(
       userId,
       new Date(),
     )
 
-    if (checkInOnSameDate) {
+    if (checkInOnSameDay) {
       throw new Error()
     }
 
