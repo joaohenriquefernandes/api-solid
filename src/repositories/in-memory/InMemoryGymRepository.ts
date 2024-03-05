@@ -7,6 +7,7 @@ export class InMemoryGymRepository implements IGymRepository {
   public items: Gym[] = []
 
   async create({
+    id,
     title,
     description,
     latitude,
@@ -14,7 +15,7 @@ export class InMemoryGymRepository implements IGymRepository {
     phone,
   }: Prisma.GymUncheckedCreateInput): Promise<Gym> {
     const gym: Gym = {
-      id: randomUUID(),
+      id: id ?? randomUUID(),
       title,
       description: description ?? null,
       phone: phone ?? null,
