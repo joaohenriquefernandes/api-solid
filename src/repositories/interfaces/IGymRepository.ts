@@ -10,5 +10,6 @@ export interface IGymRepository {
     created_at,
   }: Prisma.GymUncheckedCreateInput) => Promise<Gym>
   findById: (gymId: string) => Promise<Gym | null>
+  findManyNearby: (latitude: number, longitude: number) => Promise<Gym[]>
   searchMany: (query: string, page: number) => Promise<Gym[]>
 }
