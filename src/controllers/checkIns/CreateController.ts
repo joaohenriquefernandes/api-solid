@@ -1,3 +1,5 @@
+import { MaxDistanceError } from '@/services/errors/MaxDistanceError'
+import { MaxNumberOfCheckInsError } from '@/services/errors/MaxNumberOfCheckInsError'
 import { ResourceNotFoundError } from '@/services/errors/ResourceNotFoundError'
 import { makeCheckInService } from '@/services/factories/MakeCheckInService'
 import { FastifyReply, FastifyRequest } from 'fastify'
@@ -7,9 +9,11 @@ export async function CreateController(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
+  const createCheckInParamsSchema = z.object({
+    gymId: z.string().uuid(),
+  })
+
   const createCheckInBodySchema = z.object({
-    userId: z.string(),
-    gymId: z.string(),
     userLatitude: z.number().refine((value) => {
       return Math.abs(value) <= 90
     }),
@@ -18,15 +22,18 @@ export async function CreateController(
     }),
   })
 
-  const { gymId, userId, userLatitude, userLongitude } =
-    createCheckInBodySchema.parse(request.body)
+  const { gymId } = createCheckInParamsSchema.parse(request.params)
+
+  const { userLatitude, userLongitude } = createCheckInBodySchema.parse(
+    request.body,
+  )
 
   try {
     const checkInService = makeCheckInService()
 
     const { checkIn } = await checkInService.execute({
       gymId,
-      userId,
+      userId: request.user.sub,
       userLatitude,
       userLongitude,
     })
@@ -35,6 +42,13 @@ export async function CreateController(
   } catch (error) {
     if (error instanceof ResourceNotFoundError) {
       return reply.status(404).send()
+    }
+
+    if (
+      error instanceof MaxDistanceError ||
+      error instanceof MaxNumberOfCheckInsError
+    ) {
+      return reply.status(400).send()
     }
   }
 }
