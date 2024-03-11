@@ -16,7 +16,7 @@ export async function CreateController(
     longitude: z.number().refine((value) => {
       return Math.abs(value) <= 100
     }),
-    created_at: z.date(),
+    created_at: z.coerce.date(),
   })
 
   const { title, description, phone, latitude, longitude, created_at } =
