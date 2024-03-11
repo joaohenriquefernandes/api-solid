@@ -48,7 +48,7 @@ export async function CreateController(
       error instanceof MaxDistanceError ||
       error instanceof MaxNumberOfCheckInsError
     ) {
-      return reply.status(400).send()
+      return reply.status(400).send({ message: error.message })
     }
   }
 }
