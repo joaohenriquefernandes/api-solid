@@ -7,6 +7,7 @@ interface IRegisterServiceRequest {
   name: string
   email: string
   password: string
+  role?: 'ADMIN' | 'MEMBER'
 }
 
 interface IRegisterServiceResponse {
@@ -19,6 +20,7 @@ export class RegisterService {
     name,
     email,
     password,
+    role,
   }: IRegisterServiceRequest): Promise<IRegisterServiceResponse> {
     const isEmailAlreadyExists = await this.userRepository.findByEmail(email)
 
@@ -32,6 +34,7 @@ export class RegisterService {
       name,
       email,
       password_hash,
+      role,
     })
 
     return { user }
