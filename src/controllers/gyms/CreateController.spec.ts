@@ -12,7 +12,7 @@ describe('Create Controller', () => {
     await app.close()
   })
 
-  it.only('should be able to create gym', async () => {
+  it('should be able to create gym', async () => {
     const { token } = await createAndAuthenticateUser(app, true)
 
     const response = await request(app.server)
