@@ -27,8 +27,6 @@ describe('Create Controller', () => {
         longitude: -46.594523,
       })
 
-    console.log(response.body)
-
     expect(response.statusCode).toEqual(201)
     expect(response.body.gym).toHaveProperty('id')
   })

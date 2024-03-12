@@ -27,8 +27,6 @@ describe('Validate Controller', () => {
         longitude: -46.594523,
       })
 
-    console.log(responseCreateGym.body)
-
     const responseCreateCheckIn = await request(app.server)
       .post(`/gyms/${responseCreateGym.body.gym.id}/check-ins`)
       .set('Authorization', `Bearer ${token}`)

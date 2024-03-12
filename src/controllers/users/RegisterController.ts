@@ -19,19 +19,17 @@ export async function RegisterController(
   try {
     const registerService = makeRegisterService()
 
-    await registerService.execute({
+    const { user } = await registerService.execute({
       name,
       email,
       password,
       role,
     })
+
+    return reply.status(201).send({ user })
   } catch (error) {
     if (error instanceof UserAlreadyExistsError) {
       return reply.status(409).send({ message: error.message })
     }
-
-    throw error
   }
-
-  return reply.status(201).send()
 }
