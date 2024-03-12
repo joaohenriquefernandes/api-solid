@@ -13,7 +13,7 @@ describe('History Controller', () => {
   })
 
   it('should be able to list history check ins', async () => {
-    const { token } = await createAndAuthenticateUser(app)
+    const { token } = await createAndAuthenticateUser(app, true)
 
     const responseCreateGym = await request(app.server)
       .post('/gyms')

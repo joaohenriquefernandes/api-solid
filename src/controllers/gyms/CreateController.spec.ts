@@ -12,8 +12,8 @@ describe('Create Controller', () => {
     await app.close()
   })
 
-  it('should be able to create gym', async () => {
-    const { token } = await createAndAuthenticateUser(app)
+  it.only('should be able to create gym', async () => {
+    const { token } = await createAndAuthenticateUser(app, true)
 
     const response = await request(app.server)
       .post('/gyms')
@@ -26,6 +26,8 @@ describe('Create Controller', () => {
         latitude: -21.7843936,
         longitude: -46.594523,
       })
+
+    console.log(response.body)
 
     expect(response.statusCode).toEqual(201)
     expect(response.body.gym).toHaveProperty('id')

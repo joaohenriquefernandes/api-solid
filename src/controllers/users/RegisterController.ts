@@ -11,9 +11,10 @@ export async function RegisterController(
     name: z.string(),
     email: z.string().email(),
     password: z.string().min(6),
+    role: z.enum(['ADMIN', 'MEMBER']).optional(),
   })
 
-  const { name, email, password } = registerBodySchema.parse(request.body)
+  const { name, email, password, role } = registerBodySchema.parse(request.body)
 
   try {
     const registerService = makeRegisterService()
@@ -22,6 +23,7 @@ export async function RegisterController(
       name,
       email,
       password,
+      role,
     })
   } catch (error) {
     if (error instanceof UserAlreadyExistsError) {

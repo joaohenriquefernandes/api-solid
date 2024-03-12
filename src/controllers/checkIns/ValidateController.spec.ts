@@ -13,7 +13,7 @@ describe('Validate Controller', () => {
   })
 
   it('should be able to validate a check in', async () => {
-    const { token } = await createAndAuthenticateUser(app)
+    const { token } = await createAndAuthenticateUser(app, true)
 
     const responseCreateGym = await request(app.server)
       .post('/gyms')
@@ -26,6 +26,8 @@ describe('Validate Controller', () => {
         latitude: -21.7843936,
         longitude: -46.594523,
       })
+
+    console.log(responseCreateGym.body)
 
     const responseCreateCheckIn = await request(app.server)
       .post(`/gyms/${responseCreateGym.body.gym.id}/check-ins`)
